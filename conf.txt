@@ -1,12 +1,16 @@
 <VirtualHost *:80>
-    ServerName your_domain_or_IP
+    ServerName example.com  # Replace with your domain or IP address
 
-    WSGIDaemonProcess flaskapp threads=5
-    WSGIScriptAlias / /var/www/flaskapp/server.py
+    WSGIDaemonProcess myflaskapp python-home=/var/www/myflaskapp/venv python-path=/var/www/myflaskapp
+    WSGIProcessGroup myflaskapp
+    WSGIScriptAlias / /var/www/myflaskapp/flaskapp.wsgi
 
-    <Directory /var/www/flaskapp>
-        WSGIProcessGroup flaskapp
+    <Directory /var/www/myflaskapp>
+        WSGIProcessGroup myflaskapp
         WSGIApplicationGroup %{GLOBAL}
         Require all granted
     </Directory>
+
+    ErrorLog /var/log/httpd/myflaskapp_error.log
+    CustomLog /var/log/httpd/myflaskapp_access.log combined
 </VirtualHost>
