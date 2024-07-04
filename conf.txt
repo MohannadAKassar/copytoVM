@@ -1,0 +1,18 @@
+<VirtualHost *:80>
+    ServerName yourdomain.com
+    WSGIDaemonProcess flaskapp python-path=/var/www/flaskapp:/var/www/flaskapp/venv/lib/python3.6/site-packages
+    WSGIProcessGroup flaskapp
+    WSGIScriptAlias / /var/www/flaskapp/flaskapp.wsgi
+
+    <Directory /var/www/flaskapp>
+        Require all granted
+    </Directory>
+
+    Alias /static /var/www/flaskapp/static
+    <Directory /var/www/flaskapp/static/>
+        Require all granted
+    </Directory>
+
+    ErrorLog /var/log/httpd/flaskapp-error.log
+    CustomLog /var/log/httpd/flaskapp-access.log combined
+</VirtualHost>
