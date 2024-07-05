@@ -1,18 +1,15 @@
 <VirtualHost *:80>
-    ServerName your_domain_or_IP
-    WSGIDaemonProcess flaskapp python-home=/var/www/flaskapp/venv python-path=/var/www/flaskapp
-    WSGIProcessGroup flaskapp
-    WSGIScriptAlias / /var/www/flaskapp/flaskapp.wsgi
+    ServerName 192.168.88.100
 
-    <Directory /var/www/flaskapp/flaskapp>
+    WSGIDaemonProcess flask-app threads=5
+    WSGIScriptAlias / /var/www/flask-app/wsgi.py
+
+    <Directory /var/www/flask-app>
+        WSGIProcessGroup flask-app
+        WSGIApplicationGroup %{GLOBAL}
         Require all granted
     </Directory>
-
-    Alias /static /var/www/flaskapp/flaskapp/static
-    <Directory /var/www/flaskapp/flaskapp/static/>
-        Require all granted
-    </Directory>
-
-    ErrorLog /var/log/httpd/flaskapp_error.log
-    CustomLog /var/log/httpd/flaskapp_access.log combined
+    
+    ErrorLog /var/log/httpd/flask-app-error.log
+    CustomLog /var/log/httpd/flask-app-access.log combined
 </VirtualHost>
