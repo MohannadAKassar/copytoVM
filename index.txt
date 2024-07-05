@@ -1,33 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to My Apache Server</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1 {
-            color: #333;
-        }
-        p {
-            line-height: 1.6;
-        }
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <h1>Welcome to My Apache Server</h1>
-    <p>This is a sample HTML page hosted on Apache HTTP Server.</p>
-    <p>You can edit this page and add more content as needed.</p>
-    <p>For more information about Apache, visit <a href="https://httpd.apache.org/" target="_blank">Apache HTTP Server</a>.</p>
-</body>
-</html>
+import logging
+from logging.handlers import RotatingFileHandler
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    app.logger.info('Index page accessed')
+    return render_template('index.html')
+
+if __name__ == '__main__':
+    # Set up a file handler for logging
+    handler = RotatingFileHandler('/var/log/flaskapp/flaskapp.log', maxBytes=10000, backupCount=1)
+    handler.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    app.logger.addHandler(handler)
+
+    app.run()
