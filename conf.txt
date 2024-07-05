@@ -1,16 +1,18 @@
 <VirtualHost *:80>
-    ServerName example.com  # Replace with your domain or IP address
+    ServerName your_domain_or_IP
+    WSGIDaemonProcess flaskapp python-home=/var/www/flaskapp/venv python-path=/var/www/flaskapp
+    WSGIProcessGroup flaskapp
+    WSGIScriptAlias / /var/www/flaskapp/flaskapp.wsgi
 
-    WSGIDaemonProcess myflaskapp python-home=/var/www/myflaskapp/venv python-path=/var/www/myflaskapp
-    WSGIProcessGroup myflaskapp
-    WSGIScriptAlias / /var/www/myflaskapp/flaskapp.wsgi
-
-    <Directory /var/www/myflaskapp>
-        WSGIProcessGroup myflaskapp
-        WSGIApplicationGroup %{GLOBAL}
+    <Directory /var/www/flaskapp/flaskapp>
         Require all granted
     </Directory>
 
-    ErrorLog /var/log/httpd/myflaskapp_error.log
-    CustomLog /var/log/httpd/myflaskapp_access.log combined
+    Alias /static /var/www/flaskapp/flaskapp/static
+    <Directory /var/www/flaskapp/flaskapp/static/>
+        Require all granted
+    </Directory>
+
+    ErrorLog /var/log/httpd/flaskapp_error.log
+    CustomLog /var/log/httpd/flaskapp_access.log combined
 </VirtualHost>
